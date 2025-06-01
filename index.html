@@ -8,17 +8,30 @@
 <body>
     <section class="game-container">
         <div class="word"></div>
+        <div class="button-container">
+
+        </div>
     </section>
 
     <script>
         const wordList = ["apple", "banana", "orange", "lemon", "pear"];
+        const possibleCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
         const wordDisplay = document.querySelector(".word");
+        const buttonContainer = document.querySelector(".button-container");
+        
         var chosen_word = wordList[Math.floor(Math.random() * (wordList.length))];
         var obfuscated_word = "";
 
         for (let i = 0; i < chosen_word.length; i++) {
             obfuscated_word += "_ ";
+        }
+
+        for (let i = 0; i < possibleCharacters.length; i++) {
+            const button = document.createElement("button");
+            button.className = "character-button";
+            button.textContent = possibleCharacters[i];
+            buttonContainer.appendChild(button);
         }
 
         wordDisplay.textContent = obfuscated_word;
