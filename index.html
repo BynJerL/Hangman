@@ -15,8 +15,13 @@
 
         const wordDisplay = document.querySelector(".word");
         var chosen_word = wordList[Math.floor(Math.random() * (wordList.length))];
-        
-        wordDisplay.textContent = chosen_word;
+        var obfuscated_word = "";
+
+        for (let i = 0; i < chosen_word.length; i++) {
+            obfuscated_word += "_ ";
+        }
+
+        wordDisplay.textContent = obfuscated_word;
     </script>
 </body>
 </html>
