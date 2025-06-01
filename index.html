@@ -38,10 +38,15 @@
         const buttonContainer = document.querySelector(".button-container");
         
         var chosen_word = wordList[Math.floor(Math.random() * (wordList.length))];
-        var obfuscated_word = "";
 
-        for (let i = 0; i < chosen_word.length; i++) {
-            obfuscated_word += "_ ";
+        function updateObfuscateWord () {
+            var obfuscated_word = "";
+
+            for (let i = 0; i < chosen_word.length; i++) {
+                obfuscated_word += "_ ";
+            }
+
+            wordDisplay.textContent = obfuscated_word;
         }
 
         for (let i = 0; i < possibleCharacters.length; i++) {
@@ -51,7 +56,7 @@
             buttonContainer.appendChild(button);
         }
 
-        wordDisplay.textContent = obfuscated_word;
+        updateObfuscateWord();
     </script>
 </body>
 </html>
