@@ -4,13 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hangman Game</title>
+    <style>
+        .word {
+            width: 250px;
+            padding: 5px;
+            text-align: center;
+        }
+
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            width: 250px;
+            justify-content: center;
+        }
+        
+        .character-button {
+            width: 25px;
+            height: 25px;
+        }
+    </style>
 </head>
 <body>
     <section class="game-container">
         <div class="word"></div>
-        <div class="button-container">
-
-        </div>
+        <div class="button-container"></div>
     </section>
 
     <script>
