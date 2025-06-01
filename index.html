@@ -41,6 +41,7 @@
         
         var chosen_word = wordList[Math.floor(Math.random() * (wordList.length))];
         var discovered_letter = [];
+        var is_game_over = false;
 
         function updateObfuscateWord () {
             var obfuscated_word = "";
@@ -54,6 +55,17 @@
             }
 
             wordDisplay.textContent = obfuscated_word;
+            if (obfuscated_word.replace(/\s/g, "") === chosen_word.toUpperCase()) {
+                is_game_over = true;
+            }
+        }
+
+        function checkGameState () {
+            if (is_game_over) {
+                document.querySelectorAll(".character-button").forEach(button => {
+                    button.disabled = true;
+                });
+            }
         }
 
         for (let i = 0; i < possibleCharacters.length; i++) {
@@ -64,6 +76,7 @@
                 discovered_letter.push(button.textContent.toLowerCase());
                 updateObfuscateWord();
                 button.disabled = true;
+                checkGameState();
             };
             buttonContainer.appendChild(button);
         }
