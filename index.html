@@ -29,6 +29,7 @@
 <body>
     <section class="game-container">
         <div>Your Chance: <span class="chance-value"></span></div>
+        <div class="game-over-message"></div>
         <div class="word"></div>
         <div class="button-container"></div>
     </section>
@@ -39,11 +40,13 @@
 
         const wordDisplay = document.querySelector(".word");
         const buttonContainer = document.querySelector(".button-container");
-        const chanceValue = document.querySelector(".chance-value");
-        
+        const chanceValueDisplay = document.querySelector(".chance-value");
+        const gameOverMessage = document.querySelector(".game-over-message");
+
         var chosen_word = wordList[Math.floor(Math.random() * (wordList.length))];
         var discovered_letter = [];
         var is_game_over = false;
+        var is_victory = false;
         var chance_value = 10;
 
         function updateObfuscateWord () {
@@ -62,6 +65,7 @@
             wordDisplay.textContent = obfuscated_word;
             if (obfuscated_word.replace(/\s/g, "") === chosen_word.toUpperCase()) {
                 is_game_over = true;
+                is_victory = true;
             }
         }
 
@@ -70,11 +74,16 @@
                 document.querySelectorAll(".character-button").forEach(button => {
                     button.disabled = true;
                 });
-            }
+                if (is_victory) {
+                    gameOverMessage.textContent = "You Win!";
+                } else {
+                    gameOverMessage.textContent = "You Lose!";
+                }
+            } 
         }
 
         function displayChanceValue () {
-            chanceValue.textContent = chance_value;
+            chanceValueDisplay.textContent = chance_value;
         }
 
         for (let i = 0; i < possibleCharacters.length; i++) {
