@@ -53,6 +53,9 @@
             const button = document.createElement("button");
             button.className = "character-button";
             button.textContent = possibleCharacters[i];
+            button.onclick = () => {
+                button.disabled = true;
+            };
             buttonContainer.appendChild(button);
         }
 
