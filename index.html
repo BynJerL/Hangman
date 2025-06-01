@@ -28,6 +28,7 @@
 </head>
 <body>
     <section class="game-container">
+        <div>Your Chance: <span class="chance-value"></span></div>
         <div class="word"></div>
         <div class="button-container"></div>
     </section>
@@ -38,10 +39,12 @@
 
         const wordDisplay = document.querySelector(".word");
         const buttonContainer = document.querySelector(".button-container");
+        const chanceValue = document.querySelector(".chance-value");
         
         var chosen_word = wordList[Math.floor(Math.random() * (wordList.length))];
         var discovered_letter = [];
         var is_game_over = false;
+        var chance_value = 10;
 
         function updateObfuscateWord () {
             var obfuscated_word = "";
@@ -53,6 +56,8 @@
                     obfuscated_word += "_ ";
                 }
             }
+
+            displayChanceValue();
 
             wordDisplay.textContent = obfuscated_word;
             if (obfuscated_word.replace(/\s/g, "") === chosen_word.toUpperCase()) {
@@ -66,6 +71,10 @@
                     button.disabled = true;
                 });
             }
+        }
+
+        function displayChanceValue () {
+            chanceValue.textContent = chance_value;
         }
 
         for (let i = 0; i < possibleCharacters.length; i++) {
