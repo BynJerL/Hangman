@@ -83,6 +83,13 @@
             button.textContent = possibleCharacters[i];
             button.onclick = () => {
                 discovered_letter.push(button.textContent.toLowerCase());
+                if (!chosen_word.includes(button.textContent.toLowerCase())) {
+                    chance_value -= 1;
+                }
+
+                if (!chance_value) {
+                    is_game_over = true;
+                }
                 updateObfuscateWord();
                 button.disabled = true;
                 checkGameState();
