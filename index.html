@@ -38,12 +38,17 @@
         const buttonContainer = document.querySelector(".button-container");
         
         var chosen_word = wordList[Math.floor(Math.random() * (wordList.length))];
+        var discovered_letter = [];
 
         function updateObfuscateWord () {
             var obfuscated_word = "";
 
             for (let i = 0; i < chosen_word.length; i++) {
-                obfuscated_word += "_ ";
+                if (discovered_letter.includes(chosen_word[i])) {
+                    obfuscated_word += `${chosen_word[i]} `;
+                } else {
+                    obfuscated_word += "_ ";
+                }
             }
 
             wordDisplay.textContent = obfuscated_word;
@@ -54,6 +59,8 @@
             button.className = "character-button";
             button.textContent = possibleCharacters[i];
             button.onclick = () => {
+                discovered_letter.push(button.textContent.toLowerCase());
+                updateObfuscateWord();
                 button.disabled = true;
             };
             buttonContainer.appendChild(button);
