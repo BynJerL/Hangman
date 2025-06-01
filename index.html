@@ -14,7 +14,9 @@
         const wordList = ["apple", "banana", "orange", "lemon", "pear"];
 
         const wordDisplay = document.querySelector(".word");
-        wordDisplay.textContent = wordList[Math.floor(Math.random() * (wordList.length))];
+        var chosen_word = wordList[Math.floor(Math.random() * (wordList.length))];
+        
+        wordDisplay.textContent = chosen_word;
     </script>
 </body>
 </html>
