@@ -11,13 +11,6 @@
             justify-content: center;
         }
 
-        .word {
-            font-size: 20px;
-            width: 250px;
-            padding: 5px;
-            text-align: center;
-        }
-
         .button-container {
             display: flex;
             flex-wrap: wrap;
@@ -26,11 +19,12 @@
         }
         
         .character-button {
-            width: 30px;
-            height: 30px;
+            width: 24px;
+            height: 24px;
             margin: 1px;
             background-color: white;
             border: 2px solid black;
+            font-size: 11px;
             font-weight: 600;
             color: black;
             border-radius: 5px;
@@ -50,6 +44,22 @@
         .next-button {
             visibility: hidden;
         }
+
+        .word-container {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .letter {
+            width: 16px;
+            height: 22px;
+            font-weight: 600;
+            border-bottom: 2px solid black;
+            text-align: center;
+            user-select: none;
+        }
     </style>
 </head>
 <body>
@@ -57,7 +67,7 @@
         <div>Current Topic: <span class="topic"></span></div>
         <div>Your Chance: <span class="chance-value"></span></div>
         <div class="game-over-message"></div>
-        <div class="word"></div>
+        <div class="word-container"></div>
         <div class="button-container"></div>
         <button class="next-button">Next Round</button>
     </section>
@@ -74,12 +84,12 @@
 
         const possibleCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-        const wordDisplay = document.querySelector(".word");
         const buttonContainer = document.querySelector(".button-container");
         const chanceValueDisplay = document.querySelector(".chance-value");
         const gameOverMessage = document.querySelector(".game-over-message");
         const currentTopic = document.querySelector(".topic");
-        
+        const wordContainer = document.querySelector(".word-container");
+
         var chosen_word;
         var discovered_letter = [];
         var is_game_over = false;
@@ -94,6 +104,15 @@
             is_game_over = false;
             is_victory = false;
             chance_value = 10;
+
+            chosen_word.split('').forEach(
+                letter => {
+                    const letterContainer = document.createElement("div");
+                    letterContainer.className = "letter";
+                    // letterContainer.textContent = letter.toUpperCase();
+                    wordContainer.appendChild(letterContainer);
+                }
+            );
 
             buttonContainer.innerHTML = "";
             for (let i = 0; i < possibleCharacters.length; i++) {
@@ -120,20 +139,18 @@
         }
 
         function updateObfuscateWord () {
-            var obfuscated_word = "";
-
             for (let i = 0; i < chosen_word.length; i++) {
                 if (discovered_letter.includes(chosen_word[i])) {
-                    obfuscated_word += `${chosen_word[i].toUpperCase()} `;
-                } else {
-                    obfuscated_word += "_ ";
-                }
+                    wordContainer.children[i].textContent = chosen_word[i].toUpperCase();
+                } 
             }
 
             displayChanceValue();
 
-            wordDisplay.textContent = obfuscated_word;
-            if (obfuscated_word.replace(/\s/g, "") === chosen_word.toUpperCase()) {
+            const uniqueLetters = Array.from(new Set(chosen_word.split("")));
+            const allDiscovered = uniqueLetters.every(letter => discovered_letter.includes(letter));
+
+            if (allDiscovered) {
                 is_game_over = true;
                 is_victory = true;
             }
