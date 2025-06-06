@@ -61,6 +61,13 @@
             text-align: center;
             user-select: none;
         }
+
+        .hanged-man {
+            width: 100px;
+            height: 100px;
+            margin: auto;
+            image-rendering: smooth;
+        }
     </style>
 </head>
 <body>
@@ -68,6 +75,7 @@
         <div>Current Topic: <span class="topic"></span></div>
         <div>Your Chance: <span class="chance-value"></span></div>
         <div class="game-over-message"></div>
+        <div class="hanged-man"></div>
         <div class="word-container"></div>
         <div class="button-container"></div>
         <button class="next-button">Next Round</button>
@@ -147,6 +155,7 @@
             }
 
             displayChanceValue();
+            updateImage();
 
             const uniqueLetters = Array.from(new Set(chosen_word.split("")));
             const allDiscovered = uniqueLetters.every(letter => discovered_letter.includes(letter));
@@ -154,6 +163,13 @@
             if (allDiscovered) {
                 is_game_over = true;
                 is_victory = true;
+            }
+        }
+
+        function updateImage () {
+            const hangedMan = document.querySelector(".hanged-man");
+            if (hangedMan && chance_value < 10) {
+                hangedMan.style.backgroundImage = `url(assets/img/${10 - chance_value}.png)`;
             }
         }
 
