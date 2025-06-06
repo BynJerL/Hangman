@@ -11,6 +11,11 @@
             justify-content: center;
         }
 
+        .game-container {
+            display: flex;
+            flex-direction: column;
+        }
+
         .button-container {
             display: flex;
             flex-wrap: wrap;
@@ -43,6 +48,17 @@
 
         .next-button {
             visibility: hidden;
+            border: 2px solid;
+            border-radius: 5px;
+            margin-top: 10px;
+            padding: 5px 10px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .next-button:hover {
+            color: white;
+            background-color: black;
         }
 
         .word-container {
@@ -104,16 +120,19 @@
         const gameOverMessage = document.querySelector(".game-over-message");
         const currentTopic = document.querySelector(".topic");
         const wordContainer = document.querySelector(".word-container");
+        const nextButton = document.querySelector(".next-button");
 
         var chosen_word;
         var discovered_letter = [];
         var is_game_over = false;
         var is_victory = false;
         var chance_value = 10;
+        var playerScore = 0;
         
         currentTopic.textContent = topic;
 
         function startGame() {
+            nextButton.style.visibility = "hidden";
             chosen_word = wordList[Math.floor(Math.random() * (wordList.length))];
             discovered_letter = [];
             is_game_over = false;
@@ -185,10 +204,13 @@
                     button.disabled = true;
                 });
                 if (is_victory) {
+                    playerScore++;
                     gameOverMessage.textContent = "You Win!";
                 } else {
                     gameOverMessage.textContent = "You Lose!";
                 }
+
+                nextButton.style.visibility = "visible";
             } 
         }
 
