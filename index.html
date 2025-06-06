@@ -31,24 +31,30 @@
         }
 
         .game-over-message {
-            height: 25px;
+            height: 20px;
+        }
+
+        .next-button {
+            visibility: hidden;
         }
     </style>
 </head>
 <body>
     <section class="game-container">
+        <div>Current Topic: <span class="topic"></span></div>
         <div>Your Chance: <span class="chance-value"></span></div>
         <div class="game-over-message"></div>
         <div class="word"></div>
         <div class="button-container"></div>
+        <button class="next-button">Next Round</button>
     </section>
 
     <script>
-        let topics = "fruits";
+        let topic = "fruits";
         let wordList = [];
         fetch('wordlist.json').then(response => response.json()).then(
             data => {
-                wordList = data[topics];
+                wordList = data[topic];
                 startGame();
             }
         )
@@ -59,12 +65,15 @@
         const buttonContainer = document.querySelector(".button-container");
         const chanceValueDisplay = document.querySelector(".chance-value");
         const gameOverMessage = document.querySelector(".game-over-message");
-
+        const currentTopic = document.querySelector(".topic");
+        
         var chosen_word;
         var discovered_letter = [];
         var is_game_over = false;
         var is_victory = false;
         var chance_value = 10;
+        
+        currentTopic.textContent = topic;
 
         function startGame() {
             chosen_word = wordList[Math.floor(Math.random() * (wordList.length))];
