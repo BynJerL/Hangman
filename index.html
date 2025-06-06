@@ -54,6 +54,7 @@
             padding: 5px 10px;
             font-weight: 600;
             cursor: pointer;
+            user-select: none;
         }
 
         .next-button:hover {
@@ -94,6 +95,7 @@
     <section class="game-container">
         <div class="state-container">
             <div>Current Topic: <span class="topic"></span></div>
+            <div>Your Score: <span class="score">0</span></div>
             <div>Your Chance: <span class="chance-value"></span></div>
             <div class="game-over-message"></div>
         </div>
@@ -121,6 +123,7 @@
         const currentTopic = document.querySelector(".topic");
         const wordContainer = document.querySelector(".word-container");
         const nextButton = document.querySelector(".next-button");
+        const scoreDisplay = document.querySelector(".score");
 
         var chosen_word;
         var discovered_letter = [];
@@ -211,7 +214,8 @@
                 }
 
                 nextButton.style.visibility = "visible";
-            } 
+                scoreDisplay.textContent = playerScore;
+            }
         }
 
         function displayChanceValue () {
