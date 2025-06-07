@@ -22,12 +22,13 @@
             flex-wrap: wrap;
             width: 250px;
             justify-content: center;
+            margin-top: 10px;
         }
         
         .character-button {
-            width: 24px;
-            height: 24px;
-            margin: 1px;
+            width: 28px;
+            height: 28px;
+            margin: 2.5px;
             background-color: white;
             border: 2px solid black;
             font-size: 11px;
@@ -36,11 +37,13 @@
             border-radius: 5px;
             cursor: pointer;
             user-select: none;
+            box-shadow: 0.5px 0.5px 1px black;
         }
 
-        .character-button:disabled {
+        .character-button:disabled, .character-button:hover {
             background-color: black;
             color: white;
+            box-shadow: 0.5px 0.5px 1px grey;
         }
 
         .game-over-message {
@@ -49,7 +52,7 @@
 
         .next-button {
             visibility: hidden;
-            border: 2px solid;
+            border: 2px solid black;
             border-radius: 5px;
             margin-top: 10px;
             padding: 5px 10px;
@@ -57,11 +60,13 @@
             width: 240px;
             cursor: pointer;
             user-select: none;
+            box-shadow: 2px 2px 2px black;
         }
 
         .next-button:hover {
             color: white;
             background-color: black;
+            box-shadow: 2px 2px 2px grey;
         }
 
         .word-container {
@@ -91,7 +96,7 @@
 
         .state-container {
             font-size: 12px;
-            width: 240px;
+            width: 250px;
         }
 
         .game-data {
@@ -103,10 +108,21 @@
 
         .data-container {
             width: 100px;
-            height: 50px;
-            padding: 5px;
-            border: 1px solid black;
+            height: 45px;
+            padding: 8px;
             text-align: center;
+            border: 2px solid black;
+            border-radius: 5px;
+            background-color: white;
+            color: black;
+            user-select: none;
+            box-shadow: 2px 2px 2px black;
+        }
+
+        .data-container:hover {
+            background-color: black;
+            color: white;
+            box-shadow: 2px 2px 2px grey;
         }
 
         .data-name {
