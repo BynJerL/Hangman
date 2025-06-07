@@ -146,7 +146,7 @@
             async loadWordList () {
                 const response = await fetch('wordlist.json');
                 const list = await response.json();
-                this.wordList = shuffle(list[this.topic]);
+                this.wordList = shuffle(list[this.topic]).slice(0, 10);
             },
 
             resetGame () {
@@ -250,7 +250,19 @@
             }
         }
 
+        nextButton.addEventListener("click", function () {
+            GameManager.round++;
+            if (GameManager.round > GameManager.wordList.length) {
+                gameOverMessage.textContent = "Game Over! Final Score: " + GameManager.playerScore;
+                nextButton.style.visibility = "hidden";
+                GameManager.disableAllButtons();
+            } else {
+                GameManager.resetGame();
+            }
+        });
+
         GameManager.init();
+
     </script>
 </body>
 </html>
