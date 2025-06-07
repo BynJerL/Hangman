@@ -80,10 +80,11 @@
         }
 
         .hanged-man {
-            width: 100px;
-            height: 100px;
+            width: 50px;
+            height: 50px;
             margin: auto;
-            image-rendering: smooth;
+            image-rendering: pixelated;
+            background-size: contain;
         }
 
         .state-container {
@@ -106,15 +107,6 @@
     </section>
 
     <script>
-        let topic = "fruits";
-        let wordList = [];
-        fetch('wordlist.json').then(response => response.json()).then(
-            data => {
-                wordList = data[topic];
-                startGame();
-            }
-        )
-
         const possibleCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
         const buttonContainer = document.querySelector(".button-container");
@@ -124,103 +116,141 @@
         const wordContainer = document.querySelector(".word-container");
         const nextButton = document.querySelector(".next-button");
         const scoreDisplay = document.querySelector(".score");
+        const hangedMan = document.querySelector(".hanged-man");
 
-        var chosen_word;
-        var discovered_letter = [];
-        var is_game_over = false;
-        var is_victory = false;
-        var chance_value = 10;
-        var playerScore = 0;
-        
-        currentTopic.textContent = topic;
+        /** @param {Array} array */
+        function shuffle(array){
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[j], array[i]] = [array[i], array[j]];
+            }
+            return array;
+        }
 
-        function startGame() {
-            nextButton.style.visibility = "hidden";
-            chosen_word = wordList[Math.floor(Math.random() * (wordList.length))];
-            discovered_letter = [];
-            is_game_over = false;
-            is_victory = false;
-            chance_value = 10;
+        const GameManager = {
+            topic: "fruits",
+            chosenWord: "",
+            discoveredLetters: [],
+            isGameOver: false,
+            isVictory: false,
+            chance: 10,
+            round: 1,
+            playerScore: 0,
+            wordList: [],
 
-            chosen_word.split('').forEach(
-                letter => {
+            async init () {
+                await this.loadWordList();
+                this.resetGame();
+            },
+
+            async loadWordList () {
+                const response = await fetch('wordlist.json');
+                const list = await response.json();
+                this.wordList = shuffle(list[this.topic]);
+            },
+
+            resetGame () {
+                this.chosenWord = this.wordList[this.round - 1];
+                this.discoveredLetters = [];
+                this.isGameOver = false;
+                this.isVictory = false;
+                this.chance = 10;
+                currentTopic.textContent = this.topic;
+                gameOverMessage.textContent = "";
+                nextButton.style.visibility = "hidden";
+                this.renderWord();
+                this.renderButtons();
+                this.updateImage();
+                this.displayChanceValue();
+                scoreDisplay.textContent = this.playerScore;
+            },
+
+            renderWord () {
+                wordContainer.innerHTML = "";
+                for (let i = 0; i < this.chosenWord.length; i++) {
                     const letterContainer = document.createElement("div");
                     letterContainer.className = "letter";
-                    // letterContainer.textContent = letter.toUpperCase();
                     wordContainer.appendChild(letterContainer);
                 }
-            );
+            },
 
-            buttonContainer.innerHTML = "";
-            for (let i = 0; i < possibleCharacters.length; i++) {
-                const button = document.createElement("button");
-                button.className = "character-button";
-                button.textContent = possibleCharacters[i];
-                button.onclick = () => {
-                    discovered_letter.push(button.textContent.toLowerCase());
-                    if (!chosen_word.includes(button.textContent.toLowerCase())) {
-                        chance_value -= 1;
+            renderButtons () {
+                buttonContainer.innerHTML = "";
+                for (let i = 0; i < possibleCharacters.length; i++) {
+                    const button = document.createElement("button");
+                    button.className = "character-button";
+                    button.textContent = possibleCharacters[i];
+                    button.onclick = () => this.handleGuess(button, possibleCharacters[i].toLowerCase());
+                    buttonContainer.appendChild(button);
+                }
+            },
+
+            handleGuess (button, letter) {
+                if (this.isGameOver) return;
+                this.discoveredLetters.push(letter);
+                if (!this.chosenWord.includes(letter)) {
+                    this.chance--;
+                }
+                button.disabled = true;
+                this.updateObfuscatedWord();
+                this.displayChanceValue();
+                this.updateImage();
+                this.checkGameState();
+            },
+
+            updateObfuscatedWord () {
+                for (let i = 0; i < this.chosenWord.length; i++) {
+                    if (this.discoveredLetters.includes(this.chosenWord[i])) {
+                        wordContainer.children[i].textContent = this.chosenWord[i].toUpperCase();
+                    } else {
+                        wordContainer.children[i].textContent = "";
                     }
+                }
+            },
 
-                    if (!chance_value) {
-                        is_game_over = true;
-                    }
-                    updateObfuscateWord();
-                    button.disabled = true;
-                    checkGameState();
-                };
-                buttonContainer.appendChild(button);
-            }
+            updateImage () {
+                if (hangedMan && this.chance < 10) {
+                    hangedMan.style.backgroundImage = `url(assets/img/${10 - this.chance}.png)`;
+                } else {
+                    hangedMan.style.backgroundImage = "none";
+                }
+            },
 
-            updateObfuscateWord();
-        }
+            checkGameState () {
+                const uniqueLetters = Array.from(new Set(this.chosenWord.split("")));
+                const allDiscovered = uniqueLetters.every(letter => this.discoveredLetters.includes(letter));
+                if (allDiscovered) {
+                    this.isGameOver = true;
+                    this.isVictory = true;
+                    this.playerScore++;
+                    gameOverMessage.textContent = "You Win!";
+                    nextButton.style.visibility = "visible";
+                    scoreDisplay.textContent = this.playerScore;
+                    this.disableAllButtons();
+                    return;
+                }
 
-        function updateObfuscateWord () {
-            for (let i = 0; i < chosen_word.length; i++) {
-                if (discovered_letter.includes(chosen_word[i])) {
-                    wordContainer.children[i].textContent = chosen_word[i].toUpperCase();
-                } 
-            }
+                if (this.chance <= 0) {
+                    this.isGameOver = true;
+                    this.isVictory = false;
+                    gameOverMessage.textContent = "You Lose!";
+                    nextButton.style.visibility = "visible";
+                    this.disableAllButtons();
+                }
+            },
 
-            displayChanceValue();
-            updateImage();
-
-            const uniqueLetters = Array.from(new Set(chosen_word.split("")));
-            const allDiscovered = uniqueLetters.every(letter => discovered_letter.includes(letter));
-
-            if (allDiscovered) {
-                is_game_over = true;
-                is_victory = true;
-            }
-        }
-
-        function updateImage () {
-            const hangedMan = document.querySelector(".hanged-man");
-            if (hangedMan && chance_value < 10) {
-                hangedMan.style.backgroundImage = `url(assets/img/${10 - chance_value}.png)`;
-            }
-        }
-
-        function checkGameState () {
-            if (is_game_over) {
+            disableAllButtons () {
                 document.querySelectorAll(".character-button").forEach(button => {
                     button.disabled = true;
                 });
-                if (is_victory) {
-                    playerScore++;
-                    gameOverMessage.textContent = "You Win!";
-                } else {
-                    gameOverMessage.textContent = "You Lose!";
-                }
+            },
 
-                nextButton.style.visibility = "visible";
-                scoreDisplay.textContent = playerScore;
+            displayChanceValue() {
+                chanceValueDisplay.textContent = this.chance;
             }
         }
 
-        function displayChanceValue () {
-            chanceValueDisplay.textContent = chance_value;
-        }
+        GameManager.init();
     </script>
 </body>
 </html>
