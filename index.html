@@ -14,6 +14,7 @@
         .game-container {
             display: flex;
             flex-direction: column;
+            align-items: center;
         }
 
         .button-container {
@@ -53,6 +54,7 @@
             margin-top: 10px;
             padding: 5px 10px;
             font-weight: 600;
+            width: 240px;
             cursor: pointer;
             user-select: none;
         }
@@ -89,15 +91,64 @@
 
         .state-container {
             font-size: 12px;
+            width: 240px;
+        }
+
+        .game-data {
+            display: flex;
+            justify-content: center;
+            width: inherit;
+            gap:10px
+        }
+
+        .data-container {
+            width: 100px;
+            height: 50px;
+            padding: 5px;
+            border: 1px solid black;
+            text-align: center;
+        }
+
+        .data-name {
+            font-size: 10px;
+            line-height: 1.10;
+            height: 16px;
+            font-weight: 600;
+        }
+
+        .game-round, .score, .topic, .chance-value {
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .game-round, .score, .chance-value {
+            font-size: 18px;
         }
     </style>
 </head>
 <body>
     <section class="game-container">
         <div class="state-container">
-            <div>Current Topic: <span class="topic"></span></div>
-            <div>Your Score: <span class="score">0</span></div>
-            <div>Your Chance: <span class="chance-value"></span></div>
+            <div class="game-data">
+                <div class="data-container">
+                    <div class="data-name">Round</div>
+                    <div class="game-round"></div>
+                </div>
+                <div class="data-container">
+                    <div class="data-name">Topic</div>
+                    <div class="topic"></div>
+                </div>
+                <div class="data-container">
+                    <div class="data-name">Score</div>
+                    <div class="score">0</div>
+                </div>
+                <div class="data-container">
+                    <div class="data-name">Chance</div>
+                    <div class="chance-value"></div>
+                </div>
+            </div>
             <div class="game-over-message"></div>
         </div>
         <div class="hanged-man"></div>
@@ -117,6 +168,7 @@
         const nextButton = document.querySelector(".next-button");
         const scoreDisplay = document.querySelector(".score");
         const hangedMan = document.querySelector(".hanged-man");
+        const currentRound = document.querySelector(".game-round")
 
         /** @param {Array} array */
         function shuffle(array){
@@ -162,6 +214,7 @@
                 this.renderButtons();
                 this.updateImage();
                 this.displayChanceValue();
+                this.displayCurrentRound();
                 scoreDisplay.textContent = this.playerScore;
             },
 
@@ -245,8 +298,12 @@
                 });
             },
 
-            displayChanceValue() {
+            displayChanceValue () {
                 chanceValueDisplay.textContent = this.chance;
+            },
+
+            displayCurrentRound () {
+                currentRound.textContent = this.round;
             }
         }
 
