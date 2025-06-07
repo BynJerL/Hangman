@@ -38,6 +38,7 @@
             cursor: pointer;
             user-select: none;
             box-shadow: 0.5px 0.5px 1px black;
+            transition: background-color 0.2s ease;
         }
 
         .character-button:disabled, .character-button:hover {
@@ -47,7 +48,11 @@
         }
 
         .game-over-message {
-            height: 20px;
+            display: flex;
+            height: 35px;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
         }
 
         .next-button {
@@ -61,6 +66,8 @@
             cursor: pointer;
             user-select: none;
             box-shadow: 2px 2px 2px black;
+            background-color: white;
+            transition: background-color 0.2s ease;
         }
 
         .next-button:hover {
@@ -117,6 +124,7 @@
             color: black;
             user-select: none;
             box-shadow: 2px 2px 2px black;
+            transition: background-color 0.2s ease;
         }
 
         .data-container:hover {
@@ -334,7 +342,24 @@
             }
         });
 
-        GameManager.init();
+        function preloadHangmanImages(callback) {
+            const totalImages = 10; // 0.png to 10.png
+            let loaded = 0;
+            for (let i = 1; i <= totalImages; i++) {
+                const img = new Image();
+                img.src = `assets/img/${i}.png`;
+                img.onload = img.onerror = function () {
+                    loaded++;
+                    if (loaded === totalImages && typeof callback === "function") {
+                        callback();
+                    }
+                };
+            }
+        }
+
+        preloadHangmanImages(() => {
+            GameManager.init();
+        });
 
     </script>
 </body>
