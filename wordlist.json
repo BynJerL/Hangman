@@ -23,6 +23,7 @@
         "dog",
         "hamster",
         "fox",
+        "bat",
         "bear",
         "elephant",
         "whale",
@@ -38,7 +39,8 @@
         "squid",
         "crab",
         "dolphin",
-        "spider"
+        "spider",
+        "horse"
     ],
     "foods": [
         "salad",
@@ -56,6 +58,52 @@
         "porridge",
         "cheesecake",
         "gelato",
-        "kebab"
+        "kebab",
+        "waffle",
+        "pancake",
+        "curry",
+        "skewer"
+    ],
+    "transport": [
+        "bike",
+        "car",
+        "bus",
+        "plane",
+        "scooter",
+        "train",
+        "ship",
+        "helicopter",
+        "taxi",
+        "boat",
+        "truck",
+        "horse",
+        "skateboard",
+        "tram",
+        "cablecar",
+        "humvee",
+        "apc",
+        "canoe"
+    ],
+    "countries": [
+        "canada",
+        "brazil",
+        "germany",
+        "japan",
+        "australia",
+        "egypt",
+        "france",
+        "italy",
+        "spain",
+        "indonesia",
+        "thailand",
+        "turkey",
+        "russia",
+        "china",
+        "india",
+        "mexico",
+        "sweden",
+        "norway",
+        "finland",
+        "argentina"
     ]
 }
