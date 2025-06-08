@@ -12,6 +12,7 @@
         }
 
         .game-container {
+            margin-top: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -149,6 +150,10 @@
 
         .game-round, .score, .chance-value {
             font-size: 18px;
+        }
+
+        .correction {
+            color: red;
         }
     </style>
 </head>
@@ -292,6 +297,16 @@
                     hangedMan.style.backgroundImage = "none";
                 }
             },
+            
+            revealAnswer () {
+                for (let i = 0; i < this.chosenWord.length; i++) {
+                    const letterContainer = wordContainer.children[i];
+                    if (!this.discoveredLetters.includes(this.chosenWord[i])) {
+                        letterContainer.textContent = this.chosenWord[i].toUpperCase();
+                        letterContainer.classList.add("correction");
+                    }
+                }
+            },
 
             checkGameState () {
                 const uniqueLetters = Array.from(new Set(this.chosenWord.split("")));
@@ -312,6 +327,7 @@
                     this.isVictory = false;
                     gameOverMessage.textContent = "You Lose!";
                     nextButton.style.visibility = "visible";
+                    this.revealAnswer();
                     this.disableAllButtons();
                 }
             },
