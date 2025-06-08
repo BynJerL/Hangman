@@ -215,7 +215,7 @@
                 <option value="animals">Animals</option>
                 <option value="foods">Foods</option>
                 <option value="transport">Transportations</option>
-                <option value="country">Country</option>
+                <option value="countries">Country</option>
             </select>
             <button class="select-button">Select</button>
         </div>
@@ -255,9 +255,11 @@
         const currentTopic = document.querySelector(".topic");
         const wordContainer = document.querySelector(".word-container");
         const nextButton = document.querySelector(".next-button");
+        const selectButton = document.querySelector(".select-button");
+        const selectTopic = document.getElementById("topic-select");
         const scoreDisplay = document.querySelector(".score");
         const hangedMan = document.querySelector(".hanged-man");
-        const currentRound = document.querySelector(".game-round")
+        const currentRound = document.querySelector(".game-round");
 
         /** @param {Array} array */
         function shuffle(array){
@@ -416,6 +418,18 @@
             } else {
                 GameManager.resetGame();
             }
+        });
+
+        selectButton.addEventListener("click", function () {
+            GameManager.topic = selectTopic.value;
+            GameManager.round = 1;
+            GameManager.playerScore = 0;
+            GameManager.isGameOver = false;
+            GameManager.isVictory = false;
+            GameManager.chosenWord = "";
+            GameManager.discoveredLetters = [];
+            GameManager.wordList = [];
+            GameManager.init();
         });
 
         function preloadHangmanImages(callback) {
