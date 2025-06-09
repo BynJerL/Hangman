@@ -266,9 +266,12 @@
         <form action="" id="game-configuration">
             <label for="difficulty-select">Select Difficulty</label>
             <select name="difficulty" id="difficulty-select">
-                <option value="easy">Easy</option>
+                <option value="childplay">Childplay</option>
+                <option value="easy" selected>Easy</option>
                 <option value="medium">Medium</option>
                 <option value="hard">Hard</option>
+                <option value="very hard">Very Hard</option>
+                <option value="guess or die">Deathrow</option>
             </select>
             <label for="topic-select">Select Topic</label>
             <select name="topic" id="topic-select-2">
@@ -334,6 +337,10 @@
         const hangedMan = document.querySelector(".hanged-man");
         const currentRound = document.querySelector(".game-round");
 
+        const configForm = document.getElementById("game-configuration");
+const difficultySelect = document.getElementById("difficulty-select");
+const topicSelect2 = document.getElementById("topic-select-2");
+
         /** @param {Array} array */
         function shuffle(array){
             for (let i = array.length - 1; i > 0; i--) {
@@ -345,6 +352,7 @@
 
         const GameManager = {
             topic: "fruits",
+            difficulty: null,
             chosenWord: "",
             discoveredLetters: [],
             isGameOver: false,
@@ -370,10 +378,10 @@
                 this.discoveredLetters = [];
                 this.isGameOver = false;
                 this.isVictory = false;
-                this.chance = 10;
                 currentTopic.textContent = this.topic;
                 gameOverMessage.textContent = "";
                 nextButton.style.visibility = "hidden";
+                this.resetChance();
                 this.renderWord();
                 this.renderButtons();
                 this.updateImage();
@@ -479,6 +487,29 @@
 
             displayCurrentRound () {
                 currentRound.textContent = this.round;
+            },
+
+            resetChance () {
+                switch (this.difficulty) {
+                    case "childplay":
+                        this.chance = 50;
+                        break;
+                    case "easy":
+                        this.chance = 10;
+                        break;
+                    case "medium":
+                        this.chance = 7;
+                        break;
+                    case "hard":
+                        this.chance = 5;
+                        break;
+                    case "very hard":
+                        this.chance = 3;
+                        break;
+                    case "guess or die":
+                        this.chance = 1;
+                        break;
+                }
             }
         }
 
@@ -520,9 +551,26 @@
             }
         }
 
-        preloadHangmanImages(() => {
+        configForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            GameManager.topic = topicSelect2.value;
+            GameManager.round = 1;
+            GameManager.playerScore = 0;
+            GameManager.isGameOver = false;
+            GameManager.isVictory = false;
+            GameManager.chosenWord = "";
+            GameManager.discoveredLetters = [];
+            GameManager.wordList = [];
+            GameManager.difficulty = difficultySelect.value;
+
+            document.querySelector(".main-menu-container").style.display = "none";
+            document.querySelector(".game-container").style.display = "flex";
+
             GameManager.init();
-        });
+        })
+
+        preloadHangmanImages(() => {});
 
     </script>
 </body>
