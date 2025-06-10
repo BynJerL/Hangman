@@ -66,7 +66,7 @@
 
         .game-container {
             margin-top: 20px;
-            width: 300px;
+            width: 350px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -76,14 +76,14 @@
         .button-container {
             display: flex;
             flex-wrap: wrap;
-            width: 300px;
+            width: 320px;
             justify-content: center;
             margin-top: 10px;
         }
         
         .character-button {
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             margin: 2.5px;
             background-color: white;
             border: 2px solid black;
@@ -105,10 +105,11 @@
 
         .game-over-message {
             display: flex;
-            height: 35px;
+            height: 50px;
             align-items: center;
             justify-content: center;
             font-weight: 600;
+            font-size: 16px;
         }
 
         .next-button {
@@ -118,7 +119,9 @@
             margin-top: 10px;
             padding: 5px 10px;
             font-weight: 600;
-            width: 240px;
+            width: 320px;
+            height: 32px;
+            font-size: 16px;
             cursor: pointer;
             user-select: none;
             box-shadow: 2px 2px 2px black;
@@ -165,18 +168,18 @@
 
         .state-container {
             font-size: 12px;
-            width: 250px;
+            width: 320px;
         }
 
         .game-data {
             display: flex;
             justify-content: center;
             width: inherit;
-            gap:10px
+            gap: 8px
         }
 
         .data-container {
-            width: 100px;
+            width: 80px;
             height: 45px;
             padding: 8px;
             text-align: center;
@@ -202,7 +205,7 @@
             font-weight: 600;
         }
 
-        .game-round, .score, .topic, .chance-value {
+        .game-round, .score, .topic, .chance-value, .difficulty-value {
             height: 30px;
             display: flex;
             align-items: center;
@@ -288,7 +291,7 @@
         </form>
     </section>
     <section class="game-container">
-        <div class="topic-select-menu">
+        <!-- <div class="topic-select-menu">
             <select name="topic" id="topic-select">
                 <option value="fruits">Fruits</option>
                 <option value="animals">Animals</option>
@@ -297,7 +300,7 @@
                 <option value="countries">Countries</option>
             </select>
             <button class="select-button">Select</button>
-        </div>
+        </div> -->
         <div class="state-container">
             <div class="game-data">
                 <div class="data-container">
@@ -338,7 +341,7 @@
         const currentTopic = document.querySelector(".topic");
         const wordContainer = document.querySelector(".word-container");
         const nextButton = document.querySelector(".next-button");
-        const selectButton = document.querySelector(".select-button");
+        // const selectButton = document.querySelector(".select-button");
         const selectTopic = document.getElementById("topic-select");
         const scoreDisplay = document.querySelector(".score");
         const hangedMan = document.querySelector(".hanged-man");
@@ -537,17 +540,17 @@
             }
         });
 
-        selectButton.addEventListener("click", function () {
-            GameManager.topic = selectTopic.value;
-            GameManager.round = 1;
-            GameManager.playerScore = 0;
-            GameManager.isGameOver = false;
-            GameManager.isVictory = false;
-            GameManager.chosenWord = "";
-            GameManager.discoveredLetters = [];
-            GameManager.wordList = [];
-            GameManager.init();
-        });
+        // selectButton.addEventListener("click", function () {
+        //     GameManager.topic = selectTopic.value;
+        //     GameManager.round = 1;
+        //     GameManager.playerScore = 0;
+        //     GameManager.isGameOver = false;
+        //     GameManager.isVictory = false;
+        //     GameManager.chosenWord = "";
+        //     GameManager.discoveredLetters = [];
+        //     GameManager.wordList = [];
+        //     GameManager.init();
+        // });
 
         function preloadHangmanImages(callback) {
             const totalImages = 10; // 0.png to 10.png
